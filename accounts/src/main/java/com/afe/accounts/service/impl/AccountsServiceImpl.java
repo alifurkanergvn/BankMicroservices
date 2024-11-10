@@ -19,11 +19,11 @@ import com.afe.accounts.mapper.AccountsMapper;
 import com.afe.accounts.mapper.CustomerMapper;
 import com.afe.accounts.repository.AccountsRepository;
 import com.afe.accounts.repository.CustomerRepository;
-import com.afe.accounts.service.IAccountService;
+import com.afe.accounts.service.IAccountsService;
 
 @Service
 @AllArgsConstructor
-public class AccountServiceImpl implements IAccountService {
+public class AccountsServiceImpl implements IAccountsService {
 
     private AccountsRepository accountsRepository;
     private CustomerRepository customerRepository;
@@ -66,5 +66,28 @@ public class AccountServiceImpl implements IAccountService {
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
         customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
         return customerDto;
+    }
+
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+        AccountsDto accountsDto = customerDto.getAccountsDto();
+        if(accountsDto !=null ){
+            Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
+            );
+            AccountsMapper.mapToAccounts(accountsDto, accounts);
+            accounts = accountsRepository.save(accounts);
+
+            Long customerId = accounts.getCustomerId();
+            Customer customer = customerRepository.findById(customerId).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
+            );
+            CustomerMapper.mapToCustomer(customerDto,customer);
+            //save() method, if dont find any primary key values inside the given entitiy object, it will do insert operation
+            customerRepository.save(customer);
+            isUpdated = true;
+        }
+        return  isUpdated;
     }
 }
