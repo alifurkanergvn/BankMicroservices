@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @OpenAPIDefinition(
 		info = @Info(
 				title = "Microservice REST API Documentation",
-				description = "Bank Accounts microservice REST API Documentation",
+				description = "MyBank Accounts microservice REST API Documentation",
 				version = "v1",
 				contact = @Contact(
 						name = "Ali Furkan Erguven",
@@ -27,7 +27,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 				)
 		),
 		externalDocs = @ExternalDocumentation(
-				description =  "Bank Accounts microservice REST API Documentation",
+				description =  "MyBank Accounts microservice REST API Documentation",
 				url = "https://alifurkanergvn.github.io/"
 		)
 )
