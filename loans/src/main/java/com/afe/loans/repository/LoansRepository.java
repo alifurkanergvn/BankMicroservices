@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.afe.loans.dto.LoansDto;
 import com.afe.loans.entity.Loans;
 
 public interface LoansRepository extends JpaRepository<Loans, Long> {
