@@ -11,6 +11,8 @@
 	<groupId>com.afe</groupId>
 	<artifactId>accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<!--  Packaging format on target folder	-->
+	<packaging>jar</packaging>
 	<name>accounts</name>
 	<description>Microservice for Accounts</description>
 	<url/>
@@ -81,6 +83,9 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
+				<!-- This plugin looking for a jar inside target folder its going to start same jar for web application -->
+				<!--  mvn spring-boot:run	(your terminal path should be pom.xml path)-->
+				<!-- java -jar target/accounts-0.0.1-SNAPSHOT.jar  (for java command for start web application we are using this for docker)				-->
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
