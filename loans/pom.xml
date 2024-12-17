@@ -11,6 +11,8 @@
     <groupId>com.afe</groupId>
     <artifactId>loans</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <!--  Packaging format on target folder	-->
+    <packaging>jar</packaging>
     <name>loans</name>
     <description>loans</description>
     <url/>
@@ -83,6 +85,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!--  We prepare image name for using Buildpacks this auto generate image with below command -->
+                    <!--  mvn spring-boot:build-image	(your terminal path should be pom.xml path)-->
+                    <!--  docker images   (check image name alifurkan159/loans:l1) -->
+                    <!--  docker run -d -p 8090:8090 alifurkan159/loans:l1  -->
+                    <image>
+                        <name>alifurkan159/${project.artifactId}:l1</name>
+                    </image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
