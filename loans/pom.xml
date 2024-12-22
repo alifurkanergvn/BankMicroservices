@@ -92,6 +92,7 @@
                     <image>
                         <name>alifurkan159/${project.artifactId}:l1</name>
                     </image>
+                    <!--  docker image push docker.io/alifurkan159/loans:l1  (This command pushes the alifurkan159/loans:l1 image to the Docker Hub) -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

@@ -32,3 +32,9 @@ ENTRYPOINT ["java", "-jar", "accounts-0.0.1-SNAPSHOT.jar"]
 
 #    docker ps -a
 # This command lists all Docker containers, including stopped containers
+
+#    docker image push docker.io/alifurkan159/accounts:a1
+# This command pushes the alifurkan159/accounts:a1 image to the Docker Hub
+
+#    docker pull alifurkan159/accounts:a1
+# This command pulls the alifurkan159/accounts:a1 image from the Docker Hub

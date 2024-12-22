@@ -106,6 +106,7 @@
                     <to>
                         <image>alifurkan159/${project.artifactId}:c1</image>
                     </to>
+                    <!--  docker image push docker.io/alifurkan159/cards:c1  (This command pushes the alifurkan159/cards:c1 image to the Docker Hub) -->
                 </configuration>
             </plugin>
         </plugins>
