@@ -38,3 +38,42 @@ ENTRYPOINT ["java", "-jar", "accounts-0.0.1-SNAPSHOT.jar"]
 
 #    docker pull alifurkan159/accounts:a1
 # This command pulls the alifurkan159/accounts:a1 image from the Docker Hub
+
+#    docker image rm [image-id or image-name]
+# This command removes the entered image
+
+#    docker container start [container-id or container-name]
+# This command starts the stopped container
+
+#    docker container stop [container-id or container-name]
+# This command stops the running container
+
+#    docker container kill [container-id or container-name]
+# This command kills the running container
+
+#    docker container restart [container-id or container-name]
+# This command restarts one or more containers
+
+#    docker container rm [container-id or container-name]
+# This command removes one or more containers
+
+#     docker rmi [image-id or image-name]
+# Removes one or more images
+
+#     docker container logs <container_name>
+# Displays the logs of a specific container
+
+#     docker container logs -f <container_name>
+# Displays the logs of a specific container in a live mode
+
+#     docker container prune
+# Removes all stopped containers
+
+#     docker container stats
+# Displays resource usage statistics for all containers
+
+#     docker image prune
+# Removes all unused images
+
+#     docker exec -it <container_name> bash
+# Opens a bash shell in the running container
