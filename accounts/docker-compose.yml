@@ -1,0 +1,54 @@
+services:
+  accounts:
+    # The "accounts" service represents the Accounts microservice.
+    image: "alifurkan159/accounts:a1"  # Specifies the Docker image and its version (a1).
+    container_name: "accounts-ms"  # Assigns a custom name to the container for better identification.
+    ports:
+      - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
+    deploy:
+      resources:
+        limits:
+          memory: 700m  # Restricts the maximum memory usage for this service to 700 MB.
+    networks:
+      - mybank  # Connects this service to the "mybank" network for internal communication.
+
+  loans:
+    # The "loans" service represents the Loans microservice.
+    image: "alifurkan159/loans:l1"  # Specifies the Docker image and its version (l1).
+    container_name: "loans-ms"  # Assigns a custom name to the container for better identification.
+    ports:
+      - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
+    deploy:
+      resources:
+        limits:
+          memory: 700m  # Restricts the maximum memory usage for this service to 700 MB.
+    networks:
+      - mybank  # Connects this service to the "mybank" network for internal communication.
+
+  cards:
+    # The "cards" service represents the Cards microservice.
+    image: "alifurkan159/cards:c1"  # Specifies the Docker image and its version (c1).
+    container_name: "cards-ms"  # Assigns a custom name to the container for better identification.
+    ports:
+      - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
+    deploy:
+      resources:
+        limits:
+          memory: 700m  # Restricts the maximum memory usage for this service to 700 MB.
+    networks:
+      - mybank  # Connects this service to the "mybank" network for internal communication.
+
+networks:
+  mybank:
+    # Defines a custom bridge network named "mybank".
+    driver: "bridge"  # Uses the "bridge" driver to allow communication between services.
+
+#  Go to the this docker-compose path and open the terminal and type below command:
+#     docker compose up -d
+# Starts all the services defined in the Compose file in the background (-d=detached flag).
+# It reads the configuration from the Compose file and creates the necessary containers with the specified settings.
+# If you dont have images in local it will download on dockerHub and run it. Because we pushed before all images
+
+#  Go to the this docker-compose path and open the terminal and type below command:
+#     docker compose down
+# Stops and removes all containers, networks, and volumes created by the Compose file.
