@@ -52,3 +52,10 @@ networks:
 #  Go to the this docker-compose path and open the terminal and type below command:
 #     docker compose down
 # Stops and removes all containers, networks, and volumes created by the Compose file.
+
+#     docker compose start
+# Starts the services that are stopped or not running
+# If you use that after down command you cant start again because you removed all containers
+
+#     docker compose stop
+# Stops the running containers
