@@ -81,19 +81,38 @@
 
 	<build>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				&lt;!&ndash; This plugin looking for a jar inside target folder its going to start same jar for web application &ndash;&gt;-->
+<!--				&lt;!&ndash;  mvn spring-boot:run	(your terminal path should be pom.xml path)&ndash;&gt;-->
+<!--				&lt;!&ndash; java -jar target/accounts-0.0.1-SNAPSHOT.jar  (for java command for start web application we are using this for docker)				&ndash;&gt;-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<excludes>-->
+<!--						<exclude>-->
+<!--							<groupId>org.projectlombok</groupId>-->
+<!--							<artifactId>lombok</artifactId>-->
+<!--						</exclude>-->
+<!--					</excludes>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+
+			<!-- Above maven plugin for dockerFile(we commented all page) we changed it below with google jib maven plugin -->
+
+			<!--  https://github.com/GoogleContainerTools/jib  -->
+			<!--  Delete target folder first and check pom <packaging>jar</packaging> -->
+			<!--  mvn compile jib:dockerBuild  (your terminal path should be pom.xml path) -->
+			<!--  docker images   (check image name alifurkan159/cards:c1) -->
+			<!--  docker run -d -p 9000:9000 alifurkan159/cards:c1  -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<!-- This plugin looking for a jar inside target folder its going to start same jar for web application -->
-				<!--  mvn spring-boot:run	(your terminal path should be pom.xml path)-->
-				<!-- java -jar target/accounts-0.0.1-SNAPSHOT.jar  (for java command for start web application we are using this for docker)				-->
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.2</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<to>
+						<image>alifurkan159/${project.artifactId}:s6</image>
+					</to>
+					<!--  docker image push docker.io/alifurkan159/cards:c1  (This command pushes the alifurkan159/cards:c1 image to the Docker Hub) -->
 				</configuration>
 			</plugin>
 		</plugins>
