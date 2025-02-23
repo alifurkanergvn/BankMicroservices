@@ -8,7 +8,10 @@ import io.swagger.v3.oas.annotations.info.License;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import com.afe.cards.dto.CardsContactInfoDto;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -30,6 +33,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         )
 )
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
+@EnableConfigurationProperties(value = {CardsContactInfoDto.class}) //It allows you to inject configuration properties (e.g., application.yml) into the fields of the AccountsContactInfoDto class.
 @SpringBootApplication
 public class CardsApplication {
 
