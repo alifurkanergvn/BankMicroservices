@@ -14,22 +14,31 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
+  application:
+    name: "accounts"
   profiles:
-    active:
-      - "qa"
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 
-build:
-  version: "3.0"
+#  config:
+#    import:
+#      - "application_qa.yml"
+#      - "application_prod.yml"
 
-accounts:
-  message: "Welcome to MyBank accounts related local APIs "
-  contactDetails:
-    name: "Ali Furkan Erguven - Developer"
-    email: "alifurkanerguven@mybank.com"
-  onCallSupport:
-    - (555) 555-1234
-    - (555) 523-1345
+#  profiles:
+#    active:
+#      - "qa"
+#
+#build:
+#  version: "3.0"
+#
+#accounts:
+#  message: "Welcome to MyBank accounts related local APIs "
+#  contactDetails:
+#    name: "Ali Furkan Erguven - Developer"
+#    email: "alifurkanerguven@mybank.com"
+#  onCallSupport:
+#    - (555) 555-1234
+#    - (555) 523-1345
+## now we use all config and profile settings on configserver
