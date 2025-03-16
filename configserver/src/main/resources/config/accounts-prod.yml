@@ -2,7 +2,7 @@ build:
   version: "1.0"
 
 accounts:
-  message: "Welcome to MyBank accounts related local APIs "
+  message: "Welcome to MyBank accounts related prod APIs "
   contactDetails:
     name: "Ali Furkan Erguven - Developer"
     email: "alifurkanerguven@mybank.com"

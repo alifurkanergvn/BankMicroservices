@@ -2,7 +2,7 @@ build:
   version: "2.0"
 
 accounts:
-  message: "Welcome to MyBank accounts related local APIs "
+  message: "Welcome to MyBank accounts related QA APIs "
   contactDetails:
     name: "Ali Furkan Erguven - Developer"
     email: "alifurkanerguven@mybank.com"
