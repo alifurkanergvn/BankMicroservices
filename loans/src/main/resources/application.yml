@@ -22,6 +22,15 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
 
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#the application ensures that all management endpoints are accessible, which can be particularly useful during development and debugging
+#http://localhost:8090/actuator/refresh (POST request)  Refresh configurations at runtime using /refresh path
+
+
 ## now we use all config and profile settings on configserver
 #  config:
 #    import:
