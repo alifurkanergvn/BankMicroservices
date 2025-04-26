@@ -1,16 +1,17 @@
-spring:
-  config:
-    activate:
-      on-profile: "qa"
-
-build:
-  version: "2.0"
-
-accounts:
-  message: "Welcome to MyBank accounts related QA APIs "
-  contactDetails:
-    name: "Smith Rayban - QA Lead"
-    email: "smithrayban@mybank.com"
-  onCallSupport:
-    - (666) 265-3765
-    - (666) 734-8371
+#spring:
+#  config:
+#    activate:
+#      on-profile: "qa"
+#
+#build:
+#  version: "2.0"
+#
+#accounts:
+#  message: "Welcome to MyBank accounts related QA APIs "
+#  contactDetails:
+#    name: "Smith Rayban - QA Lead"
+#    email: "smithrayban@mybank.com"
+#  onCallSupport:
+#    - (666) 265-3765
+#    - (666) 734-8371
+## now we use all config on configserver

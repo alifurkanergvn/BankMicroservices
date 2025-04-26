@@ -14,22 +14,53 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
+  application:
+    name: "accounts"
   profiles:
-    active:
-      - "qa"
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+#we pull rabbitmq image from dockerhub with $ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 
-build:
-  version: "3.0"
 
-accounts:
-  message: "Welcome to MyBank accounts related local APIs "
-  contactDetails:
-    name: "Ali Furkan Erguven - Developer"
-    email: "alifurkanerguven@mybank.com"
-  onCallSupport:
-    - (555) 555-1234
-    - (555) 523-1345
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#the application ensures that all management endpoints are accessible, which can be particularly useful during development and debugging
+#http://localhost:8080/actuator/refresh (POST request)   Refresh configurations at runtime using /refresh path
+
+# Because of spring-boot-starter-actuator dependency, we can refresh the application settings at runtime but
+# we have to use the POST request for all microservices one by one thanks to spring-cloud-starter-bus-amqp dependency
+# http://localhost:8080/actuator/busrefresh (POST request) we are just one time refreshing all microservices instances
+# and config service will load the latest config data without restart via massage broker(rabbitmq) trigger change event action
+
+
+#  config:
+#    import:
+#      - "application_qa.yml"
+#      - "application_prod.yml"
+
+#  profiles:
+#    active:
+#      - "qa"
+#
+#build:
+#  version: "3.0"
+#
+#accounts:
+#  message: "Welcome to MyBank accounts related local APIs "
+#  contactDetails:
+#    name: "Ali Furkan Erguven - Developer"
+#    email: "alifurkanerguven@mybank.com"
+#  onCallSupport:
+#    - (555) 555-1234
+#    - (555) 523-1345
+## now we use all config and profile settings on configserver
