@@ -33,13 +33,13 @@ management:
         include: "*"
   health:
     readiness-state:
-      enabled: true   # Enables the readiness state indicator, which shows if the application is ready to serve requests.
+      enabled: true   # Enables the readiness state indicator, which shows if the application is ready to serve requests. http://localhost:8071/actuator/health/readiness
     liveness-state:
-      enabled: true   # Enables the liveness state indicator, which shows if the application is alive and functioning properly.
+      enabled: true   # Enables the liveness state indicator, which shows if the application is alive and functioning properly. http://localhost:8071/actuator/health/liveness
   endpoint:
     health:
       probes:
-        enabled: true   # Enables health probes, allowing external systems (e.g., Kubernetes) to check the application's health status.
+        enabled: true   # Enables health probes, allowing external systems (e.g., Kubernetes) to check the application's health status. http://localhost:8071/actuator/health/
 
 encrypt:
   key: "45D81EC1EF61DF9AD8D315BB697F9"
