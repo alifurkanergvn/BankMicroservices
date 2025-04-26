@@ -31,6 +31,15 @@ management:
     web:
       exposure:
         include: "*"
+  health:
+    readiness-state:
+      enabled: true   # Enables the readiness state indicator, which shows if the application is ready to serve requests.
+    liveness-state:
+      enabled: true   # Enables the liveness state indicator, which shows if the application is alive and functioning properly.
+  endpoint:
+    health:
+      probes:
+        enabled: true   # Enables health probes, allowing external systems (e.g., Kubernetes) to check the application's health status.
 
 encrypt:
   key: "45D81EC1EF61DF9AD8D315BB697F9"
