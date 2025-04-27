@@ -1,10 +1,33 @@
 services:
+  rabbit:
+    image: rabbitmq:3.13-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"    # Maps RabbitMQ's default AMQP port (5672) from the container to the host. This port is used for messaging between applications and RabbitMQ using the AMQP protocol.
+      - "15672:15672"  # Maps RabbitMQ's management UI port (15672) from the container to the host. This port provides access to the web-based management console for monitoring and managing RabbitMQ.
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s      # The time interval between each health check attempt.
+      timeout: 5s        # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10        # The number of consecutive failures allowed before marking the service as unhealthy.
+      start_period: 5s   # The initial delay before starting health checks after the container starts.
+  networks:
+    - mybank # Connects this service to the "mybank" network for internal communication.
+
   configserver:
-    # The "configserver" service represents the Config Server microservice.
     image: "alifurkan159/accounts:s6"  # Specifies the Docker image and its version (s6) for the Config Server.
     container_name: "configserver-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "8071:8071"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
+    depends_on:
+      rabbit:
+        condition: service_healthy   # Ensures that the "rabbit" service is healthy before starting this service.
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"  # This health check ensures that the Config Server is operational by sending a request to its readiness endpoint. If the response contains "UP", the service is considered healthy; otherwise, it exits with an error.
+      interval: 10s       # The time interval between each health check attempt.
+      timeout: 5s         # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10         # The number of consecutive failures allowed before marking the service as unhealthy.
+      start_period: 10s   # The initial delay before starting health checks after the container starts.
     deploy:
       resources:
         limits:
@@ -13,11 +36,13 @@ services:
       - mybank  # Connects this service to the "mybank" network for internal communication.
 
   accounts:
-    # The "accounts" service represents the Accounts microservice.
     image: "alifurkan159/accounts:s6"  # Specifies the Docker image and its version (s6).
     container_name: "accounts-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
+    depends_on:
+      configserver:
+        condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     deploy:
       resources:
         limits:
@@ -25,16 +50,18 @@ services:
     networks:
       - mybank  # Connects this service to the "mybank" network for internal communication.
     environment:
-        SPRING_APPLICATION_NAME: accounts  # Sets the application name for this service to "accounts". Enter same name as in application.yml
-        SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"  # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
-        SPRING_PROFILES_ACTIVE: default  # Sets the active profile for this service to "default" because of folder path.
+        SPRING_APPLICATION_NAME: accounts     # Sets the application name for this service to "accounts". Enter same name as in application.yml
+        SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"    # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
+        SPRING_PROFILES_ACTIVE: default     # Sets the active profile for this service to "default" because of folder path.
 
   loans:
-    # The "loans" service represents the Loans microservice.
     image: "alifurkan159/loans:s6"  # Specifies the Docker image and its version (s6).
     container_name: "loans-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
+    depends_on:
+      configserver:
+        condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     deploy:
       resources:
         limits:
@@ -42,16 +69,18 @@ services:
     networks:
       - mybank  # Connects this service to the "mybank" network for internal communication.
     environment:
-      SPRING_APPLICATION_NAME: loans  # Sets the application name for this service to "loans". Enter same name as in application.yml
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8090/"  # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
-      SPRING_PROFILES_ACTIVE: default  # Sets the active profile for this service to "default" because of folder path.
+      SPRING_APPLICATION_NAME: loans    # Sets the application name for this service to "loans". Enter same name as in application.yml
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8090/"     # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
+      SPRING_PROFILES_ACTIVE: default     # Sets the active profile for this service to "default" because of folder path.
 
   cards:
-    # The "cards" service represents the Cards microservice.
     image: "alifurkan159/cards:s6"  # Specifies the Docker image and its version (s6).
     container_name: "cards-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
+    depends_on:
+      configserver:
+        condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     deploy:
       resources:
         limits:
@@ -59,9 +88,9 @@ services:
     networks:
       - mybank  # Connects this service to the "mybank" network for internal communication.
     environment:
-      SPRING_APPLICATION_NAME: cards  # Sets the application name for this service to "cards". Enter same name as in application.yml
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:9000/"  # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
-      SPRING_PROFILES_ACTIVE: default  # Sets the active profile for this service to "default" because of folder path.
+      SPRING_APPLICATION_NAME: cards      # Sets the application name for this service to "cards". Enter same name as in application.yml
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:9000/"      # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
+      SPRING_PROFILES_ACTIVE: default     # Sets the active profile for this service to "default" because of folder path.
 
 networks:
   mybank:
