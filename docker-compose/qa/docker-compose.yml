@@ -70,7 +70,7 @@ services:
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     environment:
-      SPRING_APPLICATION_NAME: "cards"   # Sets the application name for this service to "cards". Enter same name as in application.yml
+      SPRING_APPLICATION_NAME: cards      # Sets the application name for this service to "cards". Enter same name as in application.yml
     extends:
       file: common-config.yml
       service: microservice-configserver-config
