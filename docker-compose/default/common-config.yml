@@ -10,7 +10,8 @@ services:
       resources:
         limits:
           memory: 700m  # Restricts the maximum memory usage for this service to 700 MB.
-
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"  # Sets the RabbitMQ host to "rabbit", which is the name of the RabbitMQ service defined in the same Docker Compose file.
 
   microservice-configserver-config:
     extends:
