@@ -16,7 +16,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "alifurkan159/accounts:s6"  # Specifies the Docker image and its version (s6) for the Config Server.
+    image: "alifurkan159/configserver:s6"  # Specifies the Docker image and its version (s6) for the Config Server.
     container_name: configserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8071:8071"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
