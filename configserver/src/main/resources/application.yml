@@ -25,6 +25,9 @@ spring:
     password: "guest"
     # Refresh configurations at runtime using Spring Cloud Bus & Spring Cloud Config Monitor therefore we dont need
     #any request localhost:8090/actuator/busrefresh
+    #Now we created a webhook to listen to the changes on github. Webhook listen to the changes on the main branch if changes are made
+    #send request this path http://localhost:8071/monitor with this terminal command: hookdeck listen 8071 source --cli-path /monitor
+    #check detail on https://github.com/alifurkanergvn/bank-config-server
 
 management:
   endpoints:
