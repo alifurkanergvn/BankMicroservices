@@ -1,0 +1,21 @@
+services:
+  network-deploy-service:
+    networks:
+        - mybank    # Defines the 'network-deploy-service' and connects it to the 'mybank' network, allowing communication with other services within the custom Docker network
+
+  microservice-base-config:
+    extends:
+      service: network-deploy-service
+    deploy:
+      resources:
+        limits:
+          memory: 700m  # Restricts the maximum memory usage for this service to 700 MB.
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"  # Sets the RabbitMQ host to "rabbit", which is the name of the RabbitMQ service defined in the same Docker Compose file.
+
+  microservice-configserver-config:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: prod   # Sets the active profile for this service to "prod" because of folder path.
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/  # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
