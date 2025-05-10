@@ -56,10 +56,16 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <!-- We start to use MySql server on docker images -->
         <!--	http://localhost:9000/h2-console/	-->
+<!--        <dependency>-->
+<!--            <groupId>com.h2database</groupId>-->
+<!--            <artifactId>h2</artifactId>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
