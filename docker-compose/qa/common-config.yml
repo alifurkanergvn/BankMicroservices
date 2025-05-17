@@ -3,6 +3,19 @@ services:
     networks:
         - mybank    # Defines the 'network-deploy-service' and connects it to the 'mybank' network, allowing communication with other services within the custom Docker network
 
+  microservice-db-config:
+    extends:
+      service: network-deploy-service
+    image: mysql
+    healthcheck:
+      test: ["CMD","mysqladmin" ,"ping", "-h", "localhost"]  # This health check ensures that the MySQL server is running and responsive by sending a ping command to the server.
+      timeout: 10s       # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10         # The number of consecutive failures allowed before marking the service as unhealthy.
+      interval: 10s       # The time interval between each health check attempt.
+      start_period: 10s   # The initial delay before starting health checks after the container starts.
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
   microservice-base-config:
     extends:
       service: network-deploy-service
@@ -19,3 +32,5 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: qa   # Sets the active profile for this service to "qa" because of folder path.
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/  # Specifies the Config Server URL for this service to fetch its configuration. We added environment variable like in application.yml
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root

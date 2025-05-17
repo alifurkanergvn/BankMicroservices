@@ -1,6 +1,6 @@
 services:
   rabbit:
-    image: rabbitmq:3.13-management
+    image: rabbitmq:3.12-management
     hostname: rabbitmq
     ports:
       - "5672:5672"    # Maps RabbitMQ's default AMQP port (5672) from the container to the host. This port is used for messaging between applications and RabbitMQ using the AMQP protocol.
@@ -14,6 +14,36 @@ services:
     extends:
       file: common-config.yml
       service: network-deploy-service
+
+  accountsdb:
+    container_name: accountsdb  # Assigns a custom name to the container for better identification.
+    ports:
+      - 3306:3306  # Maps port 3306 on the host to port 3306 in the container (external to internal).
+    environment:
+      MYSQL_DATABASE: accountsdb  # Creates a database named "accountsdb" upon container startup.
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  loansdb:
+    container_name: loanssdb  # Assigns a custom name to the container for better identification.
+    ports:
+      - 3307:3306  # Maps port 3307 on the host to port 3306 in the container (external to internal).
+    environment:
+      MYSQL_DATABASE: loanssdb  # Creates a database named "loanssdb" upon container startup.
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  cardsdb:
+    container_name: cardsdb  # Assigns a custom name to the container for better identification.
+    ports:
+      - 3308:3306  # Maps port 3307 on the host to port 3306 in the container (external to internal).
+    environment:
+      MYSQL_DATABASE: cardsdb  # Creates a database named "cardsdb" upon container startup.
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
 
   configserver:
     image: "alifurkan159/configserver:s6"  # Specifies the Docker image and its version (s6) for the Config Server.
@@ -39,10 +69,13 @@ services:
     ports:
       - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
     depends_on:
+      accountsdb:
+        condition: service_healthy
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     environment:
         SPRING_APPLICATION_NAME: "accounts"     # Sets the application name for this service to "accounts". Enter same name as in application.yml
+        SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"     # Sets the database URL for the application to connect to the "accountsdb" MySQL database.
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -53,10 +86,13 @@ services:
     ports:
       - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
     depends_on:
+      loansdb:
+        condition: service_healthy
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     environment:
       SPRING_APPLICATION_NAME: "loans"    # Sets the application name for this service to "loans". Enter same name as in application.yml
+      SPRING_DATASOURCE_URL: "jdbc:mysql://loansdb:3306/loansdb"   # Sets the database URL for the application to connect to the "loansdb" MySQL database.
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -67,10 +103,13 @@ services:
     ports:
       - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
     depends_on:
+      cardsdb:
+        condition: service_healthy
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     environment:
       SPRING_APPLICATION_NAME: "cards"   # Sets the application name for this service to "cards". Enter same name as in application.yml
+      SPRING_DATASOURCE_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
