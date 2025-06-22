@@ -26,11 +26,11 @@ services:
       service: microservice-db-config
 
   loansdb:
-    container_name: loanssdb  # Assigns a custom name to the container for better identification.
+    container_name: loansdb  # Assigns a custom name to the container for better identification.
     ports:
       - 3307:3306  # Maps port 3307 on the host to port 3306 in the container (external to internal).
     environment:
-      MYSQL_DATABASE: loanssdb  # Creates a database named "loanssdb" upon container startup.
+      MYSQL_DATABASE: loansdb  # Creates a database named "loansdb" upon container startup.
     extends:
       file: common-config.yml
       service: microservice-db-config
@@ -46,7 +46,7 @@ services:
       service: microservice-db-config
 
   configserver:
-    image: "alifurkan159/configserver:s6"  # Specifies the Docker image and its version (s6) for the Config Server.
+    image: "alifurkan159/configserver:s7"  # Specifies the Docker image and its version (s7) for the Config Server.
     container_name: configserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8071:8071"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
@@ -64,7 +64,7 @@ services:
       service: microservice-base-config
 
   accounts:
-    image: "alifurkan159/accounts:s6"  # Specifies the Docker image and its version (s6).
+    image: "alifurkan159/accounts:s7"  # Specifies the Docker image and its version (s7).
     container_name: accounts-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
@@ -81,7 +81,7 @@ services:
       service: microservice-configserver-config
 
   loans:
-    image: "alifurkan159/loans:s6"  # Specifies the Docker image and its version (s6).
+    image: "alifurkan159/loans:s7"  # Specifies the Docker image and its version (s7).
     container_name: loans-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
@@ -98,7 +98,7 @@ services:
       service: microservice-configserver-config
 
   cards:
-    image: "alifurkan159/cards:s6"  # Specifies the Docker image and its version (s6).
+    image: "alifurkan159/cards:s7"  # Specifies the Docker image and its version (s7).
     container_name: "cards-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
