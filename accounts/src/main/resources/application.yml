@@ -27,13 +27,20 @@ spring:
 #    username: "guest"
 #    password: "guest"
 
-
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+management: # Spring Boot Actuator management endpoints configuration
+  endpoints: # Configuration for Actuator's web endpoints
+    web: # Web-specific endpoint settings
+      exposure: # Defines which endpoints are exposed over the web
+        include: "*" # Exposes all available Actuator endpoints (e.g., /actuator/health, /actuator/info, /actuator/metrics, etc.)
+                     # Be cautious with this setting in production as it can expose sensitive information.
+  endpoint: # Specific endpoint configurations
+    shutdown: # Configuration for the 'shutdown' endpoint
+      access: unrestricted # Enables the '/actuator/shutdown' endpoint, allowing the application to be gracefully shut down via an HTTP POST request.
+                    # This endpoint is disabled by default for security reasons.
+  info: # Configuration for the 'info' endpoint
+    env: # Environment information
+      enabled: true # Enables the display of environment-specific properties (e.g., properties from application.properties/yaml, system properties, environment variables)
+                    # within the '/actuator/info' endpoint.
 #the application ensures that all management endpoints are accessible, which can be particularly useful during development and debugging
 #http://localhost:8080/actuator/refresh (POST request)   Refresh configurations at runtime using /refresh path
 
@@ -41,6 +48,26 @@ management:
 # we have to use the POST request for all microservices one by one thanks to spring-cloud-starter-bus-amqp dependency
 # http://localhost:8080/actuator/busrefresh (POST request) we are just one time refreshing all microservices instances
 # and config service will load the latest config data without restart via massage broker(rabbitmq) trigger change event action
+
+
+eureka:         # Eureka client and server configurations
+  instance:     # Configuration specific to this application's Eureka instance
+    preferIpAddress: true     # Indicates that this instance should register its IP address rather than its hostname with Eureka.
+                              # When other services discover this instance, they will receive its IP address instead of its hostname.
+  client:   # Configuration for the Eureka client (this application)
+    fetchRegistry: true         # Indicates whether this client should fetch the registry information from the Eureka server.
+                                # 'false' is typically used for a Eureka server itself, or a standalone application that doesn't need to discover other services.
+                                # in our individual microservices like accounts, loans and cards this value should be true
+    registerWithEureka: true    # Indicates whether this client should register itself with the Eureka server.
+                                # 'true' means this application is a microservice and wants to be discovered by other services.
+    serviceUrl:     # A map of Eureka server URLs to connect to
+      defaultZone: http://localhost:8070/eureka/      # The URL of the Eureka server to which this client will connect.
+
+info:
+  app:
+    name: "accounts"
+    description: "MyBank Accounts Application"  # http://localhost:8070/  you can see this info spring eureka page on status link
+    version: "1.0.0"
 
 
 #  config:
