@@ -1,6 +1,6 @@
 spring:
   application:
-    name: "eurekaserver"
+    name: "eurekaserver"  # Attancion: This name should match in the bank-config-server eurekaserver.yml
   config:
     import: "optional:configserver:http://localhost:8071/"
 
@@ -18,3 +18,7 @@ management:
     health:
       probes:
         enabled: true   # Enables health probes, allowing external systems (e.g., Kubernetes) to check the application's health status. http://localhost:8071/actuator/health/
+
+# we added new eurekaserver.yml on bank-config-server project to use eureka client http://localhost:8071/eurekaserver/default
+#Build and run the Eureka Server: Build your EurekaserverApplication project  and run it as a Spring Boot application. Open a web browser and navigate to
+#http://localhost:8070. You should see the Eureka Server dashboard, which displays information about registered service instances.
