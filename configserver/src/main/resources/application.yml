@@ -49,3 +49,7 @@ encrypt:
 
 server:
   port: 8071
+
+# we added new eurekaserver.yml on bank-config-server project to use eureka client http://localhost:8071/eurekaserver/default
+#Build and run the Eureka Server: Build your EurekaserverApplication project  and run it as a Spring Boot application. Open a web browser and navigate to
+#http://localhost:8070. You should see the Eureka Server dashboard, which displays information about registered service instances.
