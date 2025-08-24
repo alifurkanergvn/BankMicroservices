@@ -9,12 +9,14 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.afe.accounts.dto.AccountsContactInfoDto;
 
 @SpringBootApplication
-@EnableJpaAuditing(auditorAwareRef = "AuditAwareImpl")
+@EnableFeignClients // It allows you to make HTTP requests to other microservices.
+@EnableJpaAuditing(auditorAwareRef = "AuditAwareImpl") // This annotation enables JPA auditing, which allows you to automatically populate auditing fields (like createdBy, createdDate, etc.) in your entities.
 @EnableConfigurationProperties(value = {AccountsContactInfoDto.class}) //It allows you to inject configuration properties (e.g., application.yml) into the fields of the AccountsContactInfoDto class.
 @OpenAPIDefinition(
 		info = @Info(
