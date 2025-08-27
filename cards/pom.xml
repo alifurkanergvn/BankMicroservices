@@ -130,9 +130,9 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>alifurkan159/${project.artifactId}:s6</image>
+                        <image>alifurkan159/${project.artifactId}:s8</image>
                     </to>
-                    <!--  docker image push docker.io/alifurkan159/cards:s6  (This command pushes the alifurkan159/cards:s6 image to the Docker Hub) -->
+                    <!--  docker image push docker.io/alifurkan159/cards:s8  (This command pushes the alifurkan159/cards:s8 image to the Docker Hub) -->
                 </configuration>
             </plugin>
         </plugins>

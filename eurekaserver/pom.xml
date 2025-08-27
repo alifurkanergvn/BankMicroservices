@@ -68,6 +68,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!--  https://github.com/GoogleContainerTools/jib  -->
+			<!--  mvn compile jib:dockerBuild  (your terminal path should be pom.xml path) -->
+			<!--  docker images   (check image name alifurkan159/eurekaserver:s8) -->
+			<!--  docker run -d -p 8071:8071 alifurkan159/eurekaserver:s8  -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<to>
+						<image>alifurkan159/${project.artifactId}:s8</image>
+					</to>
+					<!--  docker image push docker.io/alifurkan159/eurekaserver:s8  (This command pushes the alifurkan159/eurekaserver:s8 image to the Docker Hub) -->
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
