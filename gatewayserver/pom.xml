@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.3</version>
+		<version>3.5.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.afe</groupId>
-	<artifactId>configserver</artifactId>
+	<artifactId>gatewayserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>configserver</name>
-	<description>Config Server for MyBank microservices</description>
+	<name>gatewayserver</name>
+	<description>Edge Server for MyBank Microservices</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -28,7 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<spring-cloud.version>2025.0.0</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -37,20 +37,31 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-server</artifactId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-config-monitor</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -75,8 +86,8 @@
 			<!--  https://github.com/GoogleContainerTools/jib  -->
 			<!--  Delete target folder first and check pom <packaging>jar</packaging> -->
 			<!--  mvn compile jib:dockerBuild  (your terminal path should be pom.xml path) -->
-			<!--  docker images   (check image name alifurkan159/configserver:c1) -->
-			<!--  docker run -d -p 9000:9000 alifurkan159/configserver:c1  -->
+			<!--  docker images   (check image name alifurkan159/accounts:s9) -->
+			<!--  docker run -d -p 9000:9000 alifurkan159/accounts:s6  -->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
@@ -85,7 +96,7 @@
 					<to>
 						<image>alifurkan159/${project.artifactId}:s9</image>
 					</to>
-					<!--  docker image push docker.io/alifurkan159/configserver:s9  (This command pushes the alifurkan159/configserver:s9 image to the Docker Hub) -->
+					<!--  docker image push docker.io/alifurkan159/accounts:s9  (This command pushes the alifurkan159/accounts:s9 image to the Docker Hub) -->
 				</configuration>
 			</plugin>
 		</plugins>
