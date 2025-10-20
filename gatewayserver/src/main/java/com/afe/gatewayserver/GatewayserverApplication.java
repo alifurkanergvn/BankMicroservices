@@ -1,5 +1,7 @@
 package com.afe.gatewayserver;
 
+import java.time.LocalDateTime;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -14,17 +16,26 @@ public class GatewayserverApplication {
 	}
 
 	// http://localhost:8072/actuator/gateway/routes ->
+	/* Spring Cloud Gateway route configuration.
+   Defines three routes for /mybank/accounts/**, /mybank/loans/**, /mybank/cards/**.
+   Each route rewrites the incoming path by stripping the /mybank/<service>/ prefix using
+   rewritePath with the regex (?<segment>.*) and forwards to the target service via
+   load-balanced URIs lb://ACCOUNTS, lb://LOANS, lb://CARDS.
+   This enables service discovery integration and clean internal endpoint paths. */
 	@Bean
 	public RouteLocator myBankRouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
 		return routeLocatorBuilder.routes()
 				.route(p -> p.path("/mybank/accounts/**")
-						.filters(f -> f.rewritePath("/mybank/accounts/(?<segment>.*)", "/${segment}"))
+						.filters(f -> f.rewritePath("/mybank/accounts/(?<segment>.*)", "/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
 						.uri("lb://ACCOUNTS"))
 				.route(p -> p.path("/mybank/loans/**")
-						.filters(f -> f.rewritePath("/mybank/loans/(?<segment>.*)", "/${segment}"))
+						.filters(f -> f.rewritePath("/mybank/loans/(?<segment>.*)", "/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
 						.uri("lb://LOANS"))
 				.route(p -> p.path("/mybank/cards/**")
-						.filters(f -> f.rewritePath("/mybank/cards/(?<segment>.*)", "/${segment}"))
+						.filters(f -> f.rewritePath("/mybank/cards/(?<segment>.*)", "/${segment}")
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
 						.uri("lb://CARDS"))
 				.build();
 	}
