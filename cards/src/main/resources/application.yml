@@ -70,7 +70,11 @@ info:
     description: "MyBank Cards Application"  # http://localhost:8070/  you can see this info spring eureka page on status link
     version: "1.0.0"
 
-
+logging:
+  level:
+    com:
+      afe:
+        cards: DEBUG
 
 
 

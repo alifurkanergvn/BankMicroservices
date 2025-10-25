@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +45,7 @@ import com.afe.loans.service.ILoansService;
 @Validated
 public class LoansController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoansController.class);
     private final ILoansService iLoansService;
 
     @Value("${build.version}")
@@ -96,9 +100,10 @@ public class LoansController {
     }
     )
     @GetMapping("/fetch")
-    public ResponseEntity<LoansDto> fetchLoan(@RequestParam
-                                              @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
+    public ResponseEntity<LoansDto> fetchLoan(@RequestHeader("myBank-correlation-id") String correlationId,
+                                              @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
                                               String mobileNumber) {
+        logger.debug("myBank-correlation-id found: {}", correlationId);
         LoansDto loansDto = iLoansService.fetchLoan(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(loansDto);
     }
