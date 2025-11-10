@@ -33,10 +33,18 @@ management: # Spring Boot Actuator management endpoints configuration
       exposure: # Defines which endpoints are exposed over the web
         include: "*" # Exposes all available Actuator endpoints (e.g., /actuator/health, /actuator/info, /actuator/metrics, etc.)
                      # Be cautious with this setting in production as it can expose sensitive information.
+  health:
+    readiness-state:
+      enabled: true   # Enables the readiness state indicator, which shows if the application is ready to serve requests. http://localhost:8071/actuator/health/readiness
+    liveness-state:
+      enabled: true   # Enables the liveness state indicator, which shows if the application is alive and functioning properly. http://localhost:8071/actuator/health/liveness
   endpoint: # Specific endpoint configurations
     shutdown: # Configuration for the 'shutdown' endpoint
       access: unrestricted # Enables the '/actuator/shutdown' endpoint, allowing the application to be gracefully shut down via an HTTP POST request.
                     # This endpoint is disabled by default for security reasons.
+    health:
+      probes:
+        enabled: true   # Enables health probes, allowing external systems (e.g., Kubernetes) to check the application's health status. http://localhost:8071/actuator/health/
   info: # Configuration for the 'info' endpoint
     env: # Environment information
       enabled: true # Enables the display of environment-specific properties (e.g., properties from application.properties/yaml, system properties, environment variables)
