@@ -16,7 +16,7 @@ services:
   #      service: network-deploy-service
 
   configserver:
-    image: "alifurkan159/configserver:s8"  # Specifies the Docker image and its version (s8) for the Config Server.
+    image: "alifurkan159/configserver:s9"  # Specifies the Docker image and its version (s9) for the Config Server.
     container_name: configserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8071:8071"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
@@ -34,7 +34,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "alifurkan159/eurekaserver:s8"  # Specifies the Docker image and its version (s8) for the Config Server.
+    image: "alifurkan159/eurekaserver:s9"  # Specifies the Docker image and its version (s9) for the Config Server.
     container_name: eurekaserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8070:8070"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
@@ -51,10 +51,16 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"     # Sets the application name for this service to "accounts". Enter same name as in application.yml
 
   accounts:
-    image: "alifurkan159/accounts:s8"  # Specifies the Docker image and its version (s8).
+    image: "alifurkan159/accounts:s9"  # Specifies the Docker image and its version (s9).
     container_name: accounts-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"  # This health check ensures that the Config Server is operational by sending a request to its readiness endpoint. If the response contains "UP", the service is considered healthy; otherwise, it exits with an error.
+      interval: 10s       # The time interval between each health check attempt.
+      timeout: 5s         # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10         # The number of consecutive failures allowed before marking the service as unhealthy.
+      start_period: 10s   # The initial delay before starting health checks after the container starts.
     depends_on:
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
@@ -65,10 +71,16 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: "alifurkan159/loans:s8"  # Specifies the Docker image and its version (s8).
+    image: "alifurkan159/loans:s9"  # Specifies the Docker image and its version (s9).
     container_name: loans-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"  # This health check ensures that the Config Server is operational by sending a request to its readiness endpoint. If the response contains "UP", the service is considered healthy; otherwise, it exits with an error.
+      interval: 10s       # The time interval between each health check attempt.
+      timeout: 5s         # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10         # The number of consecutive failures allowed before marking the service as unhealthy.
+      start_period: 10s   # The initial delay before starting health checks after the container starts.
     depends_on:
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
@@ -79,15 +91,39 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "alifurkan159/cards:s8"  # Specifies the Docker image and its version (s8).
+    image: "alifurkan159/cards:s9"  # Specifies the Docker image and its version (s9).
     container_name: "cards-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
+    healthcheck:
+      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"  # This health check ensures that the Config Server is operational by sending a request to its readiness endpoint. If the response contains "UP", the service is considered healthy; otherwise, it exits with an error.
+      interval: 10s       # The time interval between each health check attempt.
+      timeout: 5s         # The maximum time to wait for a health check response before considering it a failure.
+      retries: 10         # The number of consecutive failures allowed before marking the service as unhealthy.
+      start_period: 10s   # The initial delay before starting health checks after the container starts.
     depends_on:
       configserver:
         condition: service_healthy    # Ensures that the "configserver" service is healthy before starting this service.
     environment:
       SPRING_APPLICATION_NAME: "cards"   # Sets the application name for this service to "cards". Enter same name as in application.yml
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  gatewayserver:
+    image: "alifurkan159/gatewayserver:s9"  # Specifies the Docker image and its version (s9).
+    container_name: "gatewayserver-ms"  # Assigns a custom name to the container for better identification.
+    ports:
+      - "8072:8072"  # Maps port 8072 on the host to port 8072 in the container (external to internal).
+    depends_on:
+      accounts:
+        condition: service_healthy    # Ensures that the "accounts" service is healthy before starting this service.
+      loans:
+        condition: service_healthy    # Ensures that the "loans" service is healthy before starting this service.
+      cards:
+        condition: service_healthy    # Ensures that the "cards" service is healthy before starting this service.
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"   # Sets the application name for this service to "cards". Enter same name as in application.yml
     extends:
       file: common-config.yml
       service: microservice-eureka-config
