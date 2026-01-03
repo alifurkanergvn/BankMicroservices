@@ -49,3 +49,15 @@ logging:
         com:
           afe:
             gatewayserver: DEBUG
+
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10                     # Number of calls used to calculate the failure rate
+      permittedNumberOfCallsInHalfOpenState: 2  # Number of test calls allowed in half-open state
+      failureRateThreshold: 50                  # Failure rate percentage threshold to open the circuit
+      waitDurationInOpenState: 10000            # Time in milliseconds to wait before transitioning from open to half-open state
+#First we call one sample request on postman for seeing circuitbreakers status--> http://localhost:8072/mybank/accounts/api/contact-info
+#http://localhost:8072/actuator --> finding in page "circuit" links --> http://localhost:8072/actuator/circuitbreakers  --> you can see circuit breaker status(OPEN/CLOSED/HALF OPEN) for all microservices via gateway server
+#http://localhost:8072/actuator/circuitbreakers/{circuitBreakerName}  --> you can see specific microservice circuit breaker details via gateway server --> example: http://localhost:8072/actuator/circuitbreakerevents?name=accountsCircuitBreaker
