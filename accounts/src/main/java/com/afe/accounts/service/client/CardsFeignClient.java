@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.afe.accounts.dto.CardsDto;
 
-@FeignClient("cards") // My feign client will connect with the eureka server at the runtime and it will try to get all instance details with the logical names "cards"
+@FeignClient(name="cards", fallback = CardsFallback.class) // My feign client will connect with the eureka server at the runtime and it will try to get all instance details with the logical names "cards"
 public interface CardsFeignClient {
 
     @GetMapping(value = "/api/fetch", consumes = "application/json")

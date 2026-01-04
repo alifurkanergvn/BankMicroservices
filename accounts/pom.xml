@@ -85,6 +85,12 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- We are not using circuitbreaker-reactor-resilience4j because this is traditional Spring MVC with blocking IO
+		 but in reactor-resilience4j architect for Spring WebFlux(Reactive) and Spring Cloud Gateway with Reactor(Mono,Flux)-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>

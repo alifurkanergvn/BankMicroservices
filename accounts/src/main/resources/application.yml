@@ -20,6 +20,10 @@ spring:
     active: "prod"
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true    # Enables OpenFeign circuit breaker for fault tolerance in service-to-service calls
 #we pull rabbitmq image from dockerhub with $ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
 #  rabbitmq:
 #    host: "localhost"
@@ -82,6 +86,18 @@ logging:
     com:
       afe:
         accounts: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10                     # Number of calls used to calculate the failure rate
+      permittedNumberOfCallsInHalfOpenState: 2  # Number of test calls allowed in half-open state
+      failureRateThreshold: 50                  # Failure rate percentage threshold to open the circuit
+      waitDurationInOpenState: 10000            # Time in milliseconds to wait before transitioning from open to half-open state
+#First we call one sample post request on postman for seeing circuitbreakers status--> http://localhost:8072/mybank/accounts/api/create, http://localhost:8072/mybank/cards/api/create?mobileNumber=5391234567, http://localhost:8072/mybank/loans/api/create?mobileNumber=5391234567
+#Then calling feign client api with this request http://localhost:8072/mybank/accounts/api/fetchCustomerDetails?mobileNumber=5391234567
+#http://localhost:8080/actuator --> finding in page "circuit" links --> http://localhost:8080/actuator/circuitbreakers  --> you can see circuit breaker status(OPEN/CLOSED/HALF OPEN) for all microservices via gateway server
+#http://localhost:8080/actuator/circuitbreakerevents --> you can see circuit breaker events details for all microservices via gateway server
 
 #  config:
 #    import:
