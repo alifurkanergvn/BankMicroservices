@@ -11,6 +11,9 @@ spring:
             locator:
               enabled: true # Enables the DiscoveryClient integration, allowing the gateway to route requests to services registered with a service discovery server (like Eureka) using their service IDs.
               lower-case-service-id: true # Converts service IDs to lowercase when routing requests. http://localhost:8072/ACCOUNTS/api/create (routes comes from eureka in there all of them uppercase)-> with this conf you can access http://localhost:8072/accounts/api/create
+          httpclient:
+            connect-timeout: 1000  # Sets the connection timeout for HTTP client requests to 1000 milliseconds (1 second).
+            response-timeout: 5s  # Sets the response timeout for HTTP client requests to 5 seconds.
 
 management: # Spring Boot Actuator management endpoints configuration
   endpoints: # Configuration for Actuator's web endpoints
