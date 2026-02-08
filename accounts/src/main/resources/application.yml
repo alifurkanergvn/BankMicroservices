@@ -99,6 +99,21 @@ resilience4j.circuitbreaker:
 #http://localhost:8080/actuator --> finding in page "circuit" links --> http://localhost:8080/actuator/circuitbreakers  --> you can see circuit breaker status(OPEN/CLOSED/HALF OPEN) for all microservices via gateway server
 #http://localhost:8080/actuator/circuitbreakerevents --> you can see circuit breaker events details for all microservices via gateway server
 
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3
+      waitDuration: 500
+      enableExponentialBackoff: true              # Enables exponential backoff for retry attempts, increasing the wait time after each failure.
+      exponentialBackoffMultiplier: 2             # Sets the multiplier for exponential backoff, doubling the wait time after each retry.
+      ignoreExceptions:                           # Specifies exceptions that should not trigger a retry, e.g., NullPointerException. Whenever you have retryExceptions this ignoreExceptions unnecessary
+        - java.lang.NullPointerException
+      retryExceptions:                            # Specifies exceptions that should trigger a retry, e.g., TimeoutException.
+        - java.util.concurrent.TimeoutException
+
+
+
+
 #  config:
 #    import:
 #      - "application_qa.yml"
