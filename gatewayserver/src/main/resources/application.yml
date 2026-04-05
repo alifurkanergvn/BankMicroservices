@@ -14,6 +14,12 @@ spring:
           httpclient:
             connect-timeout: 1000  # Sets the connection timeout for HTTP client requests to 1000 milliseconds (1 second).
             response-timeout: 5s  # Sets the response timeout for HTTP client requests to 5 seconds.
+  data:
+    redis:                  # docker run -p 6379:6379 --name myBankRedis -d redis
+      connect-timeout: 2s  # Sets the connection timeout for Redis connections to 2 seconds.
+      host: localhost  # Specifies the Redis server host as "localhost".
+      port: 6379  # Specifies the Redis server port as 6379 (the default Redis port).
+      timeout: 1s  # Sets the overall timeout for Redis operations to 1 second.
 
 management: # Spring Boot Actuator management endpoints configuration
   endpoints: # Configuration for Actuator's web endpoints
