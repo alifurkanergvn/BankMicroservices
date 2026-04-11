@@ -111,6 +111,16 @@ resilience4j.retry:
       retryExceptions:                            # Specifies exceptions that should trigger a retry, e.g., TimeoutException.
         - java.util.concurrent.TimeoutException
 
+resilience4j.ratelimiter:
+  configs:
+    default:                     # Defines the default configuration for the rate limiter, which can be applied to any rate limiter instance that does not have a specific configuration defined.
+      timeoutDuration: 1000      # Sets the maximum time to wait for a permission to execute a request when the rate limit has been exceeded. In this case, it will wait for up to 1000 milliseconds (1 second) before timing out.
+      limitRefreshPeriod: 5000   # Sets the period after which the rate limiter's counters are reset, allowing new requests to be processed. In this case, the counters will reset every 5000 milliseconds (5 seconds).
+      limitForPeriod: 1          # Sets the maximum number of requests allowed within the defined refresh period. In this case, only 1 request will be allowed every 5 seconds. If more than 1 request is made within that period, subsequent requests will be rate-limited until the counters reset.
+
+
+
+
 
 
 
