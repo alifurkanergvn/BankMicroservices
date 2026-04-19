@@ -83,9 +83,9 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>alifurkan159/${project.artifactId}:s9</image>
+						<image>alifurkan159/${project.artifactId}:s10</image>
 					</to>
-					<!--  docker image push docker.io/alifurkan159/configserver:s9  (This command pushes the alifurkan159/configserver:s9 image to the Docker Hub) -->
+					<!--  docker image push docker.io/alifurkan159/configserver:s10  (This command pushes the alifurkan159/configserver:s10 image to the Docker Hub) -->
 				</configuration>
 			</plugin>
 		</plugins>

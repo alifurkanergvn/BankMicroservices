@@ -139,7 +139,7 @@
 			<!--  https://github.com/GoogleContainerTools/jib  -->
 			<!--  Delete target folder first and check pom <packaging>jar</packaging> -->
 			<!--  mvn compile jib:dockerBuild  (your terminal path should be pom.xml path) -->
-			<!--  docker images   (check image name alifurkan159/accounts:s9) -->
+			<!--  docker images   (check image name alifurkan159/accounts:s10) -->
 			<!--  docker run -d -p 9000:9000 alifurkan159/accounts:s6  -->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
@@ -147,9 +147,9 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>alifurkan159/${project.artifactId}:s9</image>
+						<image>alifurkan159/${project.artifactId}:s10</image>
 					</to>
-					<!--  docker image push docker.io/alifurkan159/accounts:s9  (This command pushes the alifurkan159/accounts:s9 image to the Docker Hub) -->
+					<!--  docker image push docker.io/alifurkan159/accounts:s10  (This command pushes the alifurkan159/accounts:s10 image to the Docker Hub) -->
 				</configuration>
 			</plugin>
 		</plugins>

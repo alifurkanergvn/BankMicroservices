@@ -70,17 +70,17 @@
 			</plugin>
 			<!--  https://github.com/GoogleContainerTools/jib  -->
 			<!--  mvn compile jib:dockerBuild  (your terminal path should be pom.xml path) -->
-			<!--  docker images   (check image name alifurkan159/eurekaserver:s9) -->
-			<!--  docker run -d -p 8071:8071 alifurkan159/eurekaserver:s9  -->
+			<!--  docker images   (check image name alifurkan159/eurekaserver:s10) -->
+			<!--  docker run -d -p 8071:8071 alifurkan159/eurekaserver:s10  -->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>alifurkan159/${project.artifactId}:s9</image>
+						<image>alifurkan159/${project.artifactId}:s10</image>
 					</to>
-					<!--  docker image push docker.io/alifurkan159/eurekaserver:s9  (This command pushes the alifurkan159/eurekaserver:s9 image to the Docker Hub) -->
+					<!--  docker image push docker.io/alifurkan159/eurekaserver:s10  (This command pushes the alifurkan159/eurekaserver:s10 image to the Docker Hub) -->
 				</configuration>
 			</plugin>
 		</plugins>

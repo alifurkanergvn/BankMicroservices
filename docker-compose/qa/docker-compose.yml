@@ -15,8 +15,20 @@ services:
   #      file: common-config.yml
   #      service: network-deploy-service
 
+  redis:
+    image: redis   #:8.2-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      timeout: 10s
+      retries: 10
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   configserver:
-    image: "alifurkan159/configserver:s9"  # Specifies the Docker image and its version (s9) for the Config Server.
+    image: "alifurkan159/configserver:s10"  # Specifies the Docker image and its version (s10) for the Config Server.
     container_name: configserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8071:8071"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
@@ -34,7 +46,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "alifurkan159/eurekaserver:s9"  # Specifies the Docker image and its version (s9) for the Config Server.
+    image: "alifurkan159/eurekaserver:s10"  # Specifies the Docker image and its version (s10) for the Config Server.
     container_name: eurekaserver-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8070:8070"  # Maps port 8071 on the host to port 8071 in the container (external to internal).
@@ -51,7 +63,7 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"     # Sets the application name for this service to "accounts". Enter same name as in application.yml
 
   accounts:
-    image: "alifurkan159/accounts:s9"  # Specifies the Docker image and its version (s9).
+    image: "alifurkan159/accounts:s10"  # Specifies the Docker image and its version (s10).
     container_name: accounts-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8080:8080"  # Maps port 8080 on the host to port 8080 in the container (external to internal).
@@ -71,7 +83,7 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: "alifurkan159/loans:s9"  # Specifies the Docker image and its version (s9).
+    image: "alifurkan159/loans:s10"  # Specifies the Docker image and its version (s10).
     container_name: loans-ms  # Assigns a custom name to the container for better identification.
     ports:
       - "8090:8090"  # Maps port 8090 on the host to port 8090 in the container (external to internal).
@@ -91,7 +103,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "alifurkan159/cards:s9"  # Specifies the Docker image and its version (s9).
+    image: "alifurkan159/cards:s10"  # Specifies the Docker image and its version (s10).
     container_name: "cards-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "9000:9000"  # Maps port 9000 on the host to port 9000 in the container (external to internal).
@@ -111,7 +123,7 @@ services:
       service: microservice-eureka-config
 
   gatewayserver:
-    image: "alifurkan159/gatewayserver:s9"  # Specifies the Docker image and its version (s9).
+    image: "alifurkan159/gatewayserver:s10"  # Specifies the Docker image and its version (s10).
     container_name: "gatewayserver-ms"  # Assigns a custom name to the container for better identification.
     ports:
       - "8072:8072"  # Maps port 8072 on the host to port 8072 in the container (external to internal).
@@ -122,8 +134,14 @@ services:
         condition: service_healthy    # Ensures that the "loans" service is healthy before starting this service.
       cards:
         condition: service_healthy    # Ensures that the "cards" service is healthy before starting this service.
+      redis:
+        condition: service_healthy    # Ensures that the "redis" service is healthy before starting this service.
     environment:
-      SPRING_APPLICATION_NAME: "gatewayserver"   # Sets the application name for this service to "cards". Enter same name as in application.yml
+      SPRING_APPLICATION_NAME: "gatewayserver"   # Sets the application name for this service to "gatewayserver". Enter same name as in application.yml
+      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-eureka-config
